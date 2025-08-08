@@ -9,7 +9,7 @@ const app = express();
 const PriceTrigger = require('./models/PriceTrigger');
 const ScheduledOrder = require('./models/ScheduledOrder');
 
-mongoose.connect('mongodb://localhost:27017/trading-platform', {
+mongoose.connect(process.env.MONGODB_URI), {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
