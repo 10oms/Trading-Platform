@@ -9,10 +9,11 @@ const app = express();
 const PriceTrigger = require('./models/PriceTrigger');
 const ScheduledOrder = require('./models/ScheduledOrder');
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect("mongodb+srv://omsagar10:omsagar8010@trading-platform.ni06cww.mongodb.net/trading-platform?retryWrites=true&w=majority&appName=trading-platform", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
