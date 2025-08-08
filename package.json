@@ -1,0 +1,29 @@
+{
+  "name": "trading-platform-no-api",
+  "version": "1.0.0",
+  "description": "This is a simulated trading platform built with **Node.js**, **Express**, **MongoDB**, and **EJS**, which does **not use any external stock market APIs**. It supports two core features:",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/10oms/Trading-Platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/10oms/Trading-Platform/issues"
+  },
+  "homepage": "https://github.com/10oms/Trading-Platform#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.1",
+    "node-cron": "^4.2.1"
+  }
+}
