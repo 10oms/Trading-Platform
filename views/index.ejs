@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trading Platform (No API)</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>📈 Simulated Trading Dashboard</h1>
+
+  <h2>Auto-Redeem Trigger</h2>
+  <form action="/price-trigger" method="POST">
+    <input type="text" name="stockSymbol" placeholder="Stock Symbol" required>
+    <input type="number" name="currentPrice" placeholder="Current Price" required>
+    <input type="number" name="targetPrice" placeholder="Target Price" required>
+    <button type="submit">Set Auto-Redeem</button>
+  </form>
+
+  <h2>Scheduled Buy Order</h2>
+  <form action="/schedule-buy" method="POST">
+    <input type="text" name="stockSymbol" placeholder="Stock Symbol" required>
+    <input type="datetime-local" name="scheduleDateTime" required>
+    <button type="submit">Schedule Buy</button>
+  </form>
+
+  <hr>
+
+  <h3>Active Price Triggers</h3>
+  <ul>
+    <% triggers.forEach(t => { %>
+      <li><%= t.stockSymbol %> | Current: ₹<%= t.currentPrice %> → Target: ₹<%= t.targetPrice %></li>
+    <% }) %>
+  </ul>
+
+  <h3>Scheduled Buys</h3>
+  <ul>
+    <% scheduled.forEach(s => { %>
+      <li><%= s.stockSymbol %> at <%= s.scheduleDateTime.toLocaleString() %></li>
+    <% }) %>
+  </ul>
+</body>
+</html>
