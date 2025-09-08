@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Trading Platform</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-header">
+    <div class="app-title">Trading Platform (Demo)</div>
+    <div class="header-actions">
+      <div style="width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;border:1px solid #eef3fb">⚙️</div>
+    </div>
+  </div>
+
+  <div class="search-bar-wrap">
+    <div class="search-inner">
+      <div class="search-input">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:0.6">
+          <path d="M21 21l-4.35-4.35" stroke="#091127" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="11" cy="11" r="6" stroke="#091127" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input id="search-input" type="search" placeholder="Search stocks, symbols, sectors..." />
+      </div>
+      <div class="search-select">
+        <select id="sector-filter">
+          <option value="all">All Sectors</option>
+          <option value="it">IT Sector</option>
+          <option value="banking">Banking</option>
+          <option value="energy">Energy</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div class="badge" style="background:#eef4ff;color:var(--primary);padding:8px 10px;border-radius:10px;font-weight:700">Top Gainers</div>
+        <div class="badge" style="background:#fff8f0;color:#ff8a66;padding:8px 10px;border-radius:10px;font-weight:700">Watchlist</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="left-column">
+      <div class="trading-actions">
+        <form action="/add-trigger" method="POST" class="action-form">
+          <input name="stock" placeholder="Stock (e.g. RELIANCE)" required>
+          <input name="targetPrice" type="number" step="0.01" placeholder="Target ₹" required style="max-width:120px">
+          <button type="submit">🎯 Set</button>
+        </form>
+
+        <form action="/add-schedule" method="POST" class="action-form">
+          <input name="stock" placeholder="Stock (e.g. INFY)" required>
+          <input name="scheduledTime" type="datetime-local" required style="min-width:170px">
+          <button type="submit">🛒 Schedule</button>
+        </form>
+      </div>
+
+      <div class="stock-grid" id="stock-list">
+        <% stocks.forEach(stock => { %>
+          <div class="stock-card" data-name="<%= stock.name.toLowerCase() %>" data-sector="<%= stock.sector %>" data-symbol="<%= stock.symbol %>">
+            <div class="stock-top">
+              <div>
+                <div class="stock-name"><a href="/stock/<%= stock.symbol %>"><%= stock.name %></a></div>
+                <div class="stock-symbol"><%= stock.symbol %></div>
+              </div>
+              <div class="stock-price">₹<%= stock.price %></div>
+            </div>
+            <div class="stock-meta">
+              <div class="stock-change <%= stock.change >= 0 ? 'up' : 'down' %>"><%= stock.change >=0 ? '+' : '' %><%= stock.change %></div>
+              <div style="margin-left:auto;color:#94a3b8;font-weight:700"><%= stock.sector.toUpperCase() %></div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+
+    <aside class="right-column">
+      <div class="card">
+        <h3>Active Price Triggers</h3>
+        <div class="list-scroll" id="trigger-list">
+          <% if (triggers.length === 0) { %>
+            <div class="empty-state">No active price triggers</div>
+          <% } else { %>
+            <ul>
+              <% triggers.forEach(t => { %>
+                <li><strong><%= t.stock %></strong> @ ₹<%= t.targetPrice %></li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Scheduled Orders</h3>
+        <div class="list-scroll" id="scheduled-list">
+          <% if (scheduled.length === 0) { %>
+            <div class="empty-state">No scheduled orders</div>
+          <% } else { %>
+            <ul>
+              <% scheduled.forEach(s => { %>
+                <li><strong><%= s.stock %></strong> at <%= new Date(s.scheduledTime).toLocaleString() %></li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/search.js"></script>
+</body>
+</html>
